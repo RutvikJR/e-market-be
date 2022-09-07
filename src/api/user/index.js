@@ -26,28 +26,25 @@ router.delete('/deleteUser', controller.remove);
  * /api/user/register:
  *  post:
  *      tags: [Auth]
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                firstName:
- *                  type: string
- *                  default: Husen
- *                lastName:
- *                  type: string
- *                  default: Husen
- *                contact:
- *                  type: string
- *                  default: Husen
- *                email:
- *                  type: string
- *                  default: Husen
- *                password:
- *                  type: string
- *                  default: Husen
+ *      summary: Creates a new user.
+ *      consumes:
+ *       - application/json
+ *      parameters:
+ *        - in: body
+ *          name: user
+ *          schema:
+ *            type: object
+ *            properties:
+ *              firstName:
+ *                type: string
+ *              lastName:
+ *                type: string
+ *              contact:
+ *                type: string
+ *              email:
+ *                type: string
+ *              password:
+ *                type: string
  *      responses:
  *        default:
  *          description: default response
@@ -60,21 +57,60 @@ router.delete('/deleteUser', controller.remove);
  * /api/user/deleteUser:
  *  delete:
  *      tags: [Auth]
+ *      consumes:
+ *       - application/json
+ *      parameters:
+ *        - in: body
+ *          name: user
+ *          schema:
+ *            type: object
+ *            properties:
+ *              id:
+ *                type: string
  *      responses:
  *        default:
  *          description: default response
  */
 
-
-// getUsers api
+// getUser by ID api
 /**
  * @swagger
  *  description: get all users
  * /api/user/getById:
  *  get:
  *      tags: [Auth]
+ *      consumes:
+ *       - application/json
+ *      parameters:
+ *        - in: body
+ *          name: user
+ *          schema:
+ *            type: object
+ *            properties:
+ *              id:
+ *                type: string
  *      responses:
  *        default:
  *          description: default response
  */
 module.exports = router;
+
+// *       parameters:
+// *         - in: body
+// *           name: user
+// *           description: The user to create.
+// *           schema:
+// *             type: object
+// *             required:
+// *               - firstName
+// *             properties:
+// *               firstName:
+// *                 type: string
+// *               lastName:
+// *                 type: string
+// *               contact:
+// *                 type: string
+// *               email:
+// *                 type: string
+// *               password:
+// *                 type: string
