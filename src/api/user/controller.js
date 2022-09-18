@@ -1,4 +1,7 @@
 var users = require('./model');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -12,13 +15,16 @@ exports.register = async (req, res) => {
                 message: 'This email is already registered!',
             });
         } else {
+            const salt = await bcrypt.genSalt();
+            const hashPassword = await bcrypt.hash(req.body.password, salt);
+
             const query = new users({
                 _id: new ObjectId(),
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 contact: req.body.contact,
-                email: req.body.email,
-                password: req.body.password,
+                email: req.body.email.toLowerCase(),
+                password: hashPassword,
                 verified: false,
             });
             query
@@ -30,6 +36,32 @@ exports.register = async (req, res) => {
                     });
                 })
                 .catch((error) => console.log(error));
+        }
+    } catch (error) {
+        res.status(200).json({ success: 0, message: error });
+    }
+};
+
+exports.login = async (req, res) => {
+    try {
+        let user = await users.findOne({
+            email: req.body.email.toLowerCase(),
+        });
+        if (!user) {
+            res.status(400).json({ message: 'This email is not registered!' });
+        } else {
+            const isMatch = await bcrypt.compare(
+                req.body.password,
+                user.password
+            );
+            if (isMatch) {
+                const token = jwt.sign({ id: user._id }, 'Abcd@123', {});
+                res.status(200).json({
+                    data: user,
+                    token,
+                    message: 'Details Found!',
+                });
+            } else res.status(400).json({ message: 'Invalid credentials!' });
         }
     } catch (error) {
         res.status(200).json({ success: 0, message: error });

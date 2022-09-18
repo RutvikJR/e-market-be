@@ -3,6 +3,7 @@ var controller = require('./controller');
 const router = express();
 
 router.post('/register', controller.register);
+router.post('/login', controller.login);
 router.get('/getUsers', controller.index);
 router.get('/getById', controller.getById);
 router.delete('/deleteUser', controller.remove);
@@ -41,6 +42,31 @@ router.delete('/deleteUser', controller.remove);
  *                type: string
  *              contact:
  *                type: string
+ *              email:
+ *                type: string
+ *              password:
+ *                type: string
+ *      responses:
+ *        default:
+ *          description: default response
+ */
+
+// Login api
+/**
+ * @swagger
+ *  description: get all users
+ * /api/user/login:
+ *  post:
+ *      tags: [Auth]
+ *      summary: Login user.
+ *      consumes:
+ *       - application/json
+ *      parameters:
+ *        - in: body
+ *          name: user
+ *          schema:
+ *            type: object
+ *            properties:
  *              email:
  *                type: string
  *              password:
