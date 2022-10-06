@@ -45,7 +45,7 @@ app.use(bodyParser.json());
 app.use('/api', indexRoutes);
 
 mongoose
-    .connect(config.mongo_url, {
+    .connect(config.mongoUrl, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
