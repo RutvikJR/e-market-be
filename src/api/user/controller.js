@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const mongoose = require('mongoose');
+const { tokenKey } = require('../../config/config');
 const ObjectId = mongoose.Types.ObjectId;
 
 exports.register = async (req, res) => {
@@ -55,7 +56,7 @@ exports.login = async (req, res) => {
                 user.password
             );
             if (isMatch) {
-                const token = jwt.sign({ id: user._id }, 'Abcd@123', {});
+                const token = jwt.sign({ id: user._id }, tokenKey, {});
                 res.status(200).json({
                     data: user,
                     token,
